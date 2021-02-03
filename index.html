@@ -27,13 +27,10 @@
             <input id='#formColor' data-jscolor="{}" value="#ffff00" name="color1" class="color">
         </p>
         <p>
-            Rectangle Size:
-            <select name="penSize" id="penSize" onchange="getPenValue()">
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="30">30</option>
-                <option value="40">40</option>
-            </select>
+            Rectangle Size X:
+            <input type="range" min="1" max="100" step="1" value="10" onchange="getPenSize()" id='penSizeX'> <br>
+            Rectangle Size Y:
+            <input type="range" min="1" max="100" step="1" value="10" onchange="getPenSize()" id='penSizeY'>
         </p>
 
     </form>
