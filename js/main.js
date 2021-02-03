@@ -1,12 +1,11 @@
-let Graphics = PIXI.Graphics;
-let Application = PIXI.Application;
-let loader = PIXI.loader;
-let Sprite = PIXI.Sprite;
-let resources = PIXI.loader.resources;
-let RenderTexture = PIXI.RenderTexture;
+let Graphics        = PIXI.Graphics;
+let Application     = PIXI.Application;
+let loader          = PIXI.loader;
+let Sprite          = PIXI.Sprite;
+let resources       = PIXI.loader.resources;
+let RenderTexture   = PIXI.RenderTexture;
 
-let color = [0xffff00, 0xff0000, 0x00ff00, 0x0000ff];
-let penColor = color[0];
+let penColor = 0xffff00;
 
 let appSetting = {
     width: 800,
@@ -23,15 +22,20 @@ const app = new Application({
 });
 
 document.querySelector(".app").appendChild(app.view);
-
 loader.add("images/kot.jpg").load(setup);
-let stageConteiner;
+
+let sprites = {};
 let cat;
+
 function setup() {
-    cat = new Sprite(resources["images/kot.jpg"].texture);
-    // cat.interactive = true;
-    stageConteiner = new RenderTexture(app, 16, 16);
-    app.stage.addChild(cat);
+    sprites.cat = new Sprite(resources["images/kot.jpg"].texture);
+    
+    sprites.cat.width = appSetting.width;
+    sprites.cat.height = appSetting.height;
+    // sprites.cat.x = appSetting.width/2;
+    // sprites.cat.y =  appSetting.height/2;
+    
+    app.stage.addChild(sprites.cat);
 
     app.stage.interactive = true;
     document.addEventListener("mousewheel", mouseWheelHandler);
@@ -41,21 +45,25 @@ function setup() {
 }
 
 function gameLoop(delta) {
-    cat.scale.x = appSetting.scale;
-    cat.scale.y = appSetting.scale;
+    sprites.cat.scale.x = appSetting.scale;
+    sprites.cat.scale.y = appSetting.scale;
 }
 
 function drawRectangle(e) {
     let rect = new Graphics();
     let posMouse = e.data.global;
 
+    // console.log(posMouse.x, posMouse.y);
+    
     rect.beginFill(penColor);
     rect.drawRect(0, 0, appSetting.rectWidth, appSetting.rectHeight);
     rect.endFill();
 
     rect.x = posMouse.x - Math.round(appSetting.rectHeight / 2);
     rect.y = posMouse.y - Math.round(appSetting.rectWidth / 2);
+    // console.log(rect.x, rect.y);
 
+    // sprites.cat.addChild(rect);
     app.stage.addChild(rect);
 }
 
@@ -71,7 +79,9 @@ function getPenValue() {
     appSetting.rectHeight = +select.value;
 }
 
-function saveImage() {}
+function saveImage() {
+    console.log("Save Image");
+}
 
 function openImage() {
     console.log("Open Image");
@@ -111,7 +121,5 @@ function mouseWheelHandler(e) {
 
 function getColor(form) {
     let doc = document.getElementById("#formColor");
-    let cl = doc.value;
-    console.log(typeof +cl);
-    console.log(doc.value);
+    penColor = doc.value.replace('#','0x');
 }
