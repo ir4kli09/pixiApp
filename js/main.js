@@ -1,9 +1,9 @@
-let Graphics        = PIXI.Graphics;
-let Application     = PIXI.Application;
-let loader          = PIXI.loader;
-let Sprite          = PIXI.Sprite;
-let resources       = PIXI.loader.resources;
-let RenderTexture   = PIXI.RenderTexture;
+let Graphics = PIXI.Graphics;
+let Application = PIXI.Application;
+let loader = PIXI.loader;
+let Sprite = PIXI.Sprite;
+let resources = PIXI.loader.resources;
+let RenderTexture = PIXI.RenderTexture;
 
 let penColor = 0xffff00;
 
@@ -29,12 +29,10 @@ let cat;
 
 function setup() {
     sprites.cat = new Sprite(resources["images/kot.jpg"].texture);
-    
+
     sprites.cat.width = appSetting.width;
     sprites.cat.height = appSetting.height;
-    // sprites.cat.x = appSetting.width/2;
-    // sprites.cat.y =  appSetting.height/2;
-    
+
     app.stage.addChild(sprites.cat);
 
     app.stage.interactive = true;
@@ -53,30 +51,21 @@ function drawRectangle(e) {
     let rect = new Graphics();
     let posMouse = e.data.global;
 
-    // console.log(posMouse.x, posMouse.y);
-    
     rect.beginFill(penColor);
     rect.drawRect(0, 0, appSetting.rectWidth, appSetting.rectHeight);
     rect.endFill();
 
-    rect.x = posMouse.x - Math.round(appSetting.rectHeight / 2);
-    rect.y = posMouse.y - Math.round(appSetting.rectWidth / 2);
-    // console.log(rect.x, rect.y);
-
-    // sprites.cat.addChild(rect);
+    rect.x = posMouse.x - Math.round(appSetting.rectWidth / 2);
+    rect.y = posMouse.y - Math.round(appSetting.rectHeight / 2);
+    
     app.stage.addChild(rect);
 }
 
-function getColorValue() {
-    let select = document.getElementById("colors");
-    let value = select.value;
-    penColor = color[value];
-}
-
-function getPenValue() {
-    let select = document.getElementById("penSize");
-    appSetting.rectWidth = +select.value;
-    appSetting.rectHeight = +select.value;
+function getPenSize() {
+    let x = document.getElementById("penSizeX");
+    let y = document.getElementById("penSizeY");
+    appSetting.rectHeight = y.value;
+    appSetting.rectWidth = x.value;
 }
 
 function saveImage() {
@@ -86,7 +75,7 @@ function saveImage() {
 function openImage() {
     console.log("Open Image");
 }
-
+///
 function drawLine() {
     for (let i = 0; i < appSetting.height; i += appSetting.rectWH) {
         drawLineH(i, 0);
@@ -113,7 +102,7 @@ function drawLineW(i, j) {
     line.y = j;
     app.stage.addChild(line);
 }
-
+////
 function mouseWheelHandler(e) {
     appSetting.scale += e.deltaY / 10000;
     appSetting.width += e.deltaY / 10;
@@ -121,5 +110,5 @@ function mouseWheelHandler(e) {
 
 function getColor(form) {
     let doc = document.getElementById("#formColor");
-    penColor = doc.value.replace('#','0x');
+    penColor = doc.value.replace("#", "0x");
 }
