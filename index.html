@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIXI.JS APP</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="js/pixi.min.js"></script>
+   
+    
+    <script src="js/jscolor.js"></script>
+</head>
+<body>
+    <div class="app"></div>
+    <script src="js/main.js"></script>
+    <div class="btn">
+        <!-- <button class="btn-js" onclick="openImage()">Open Image</button> -->
+        <button class="btn-js" onclick="saveImage()">Save Image</button>
+    </div>
+    <div class="col">
+        <select name="colors" id="colors" onchange="getColorValue()">
+            <option value="0" selected>yellow</option>
+            <option value="1">red</option>
+            <option value="2">green</option>
+            <option value="3">blue</option>
+        </select>
+        <select name="penSize" id="penSize" onchange="getPenValue()">
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+        </select>
+    </div>
+    <div class="result">
+        <div class="scales"></div>
+    </div>
+
+    <form onchange="getColor(this)">
+        <p>
+            Color 1 - HexA:
+            <input id='#formColor' data-jscolor="{}" value="#FFA00080" name="color1" class="color">
+        </p>
+    </form>
+    <script src="js/main.js"></script>
+</body>
+</html>

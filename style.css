@@ -1,0 +1,18 @@
+.body {
+    display: block;
+    margin: 0px;
+    padding: 0px;
+}
+.app {
+    margin: 0px;
+    padding: 0px;
+}
+/* .btn{
+    display: flex;
+}
+.btn-js{
+    margin-right: 10px;
+}
+.btn-js:last-child{
+    margin-right: 0px;
+} */
