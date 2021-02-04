@@ -21,6 +21,9 @@ const app = new Application({
     backgroundColor: 0xffffff,
 });
 
+// Рамка для canvsa на странице
+app.renderer.view.style.border = "1px solid black";
+
 document.querySelector(".app").appendChild(app.view);
 loader.add("images/kot.jpg").load(setup);
 
@@ -47,8 +50,6 @@ function setup() {
 function gameLoop(delta) {
     sprites.cat.scale.x = appSetting.scale;
     sprites.cat.scale.y = appSetting.scale;
-
-
 }
 
 function drawRectangle(e) {
@@ -64,16 +65,21 @@ function drawRectangle(e) {
 
     rect.x = posMouse.x - Math.round(appSetting.rectWidth  / 2);
     rect.y = posMouse.y - Math.round(appSetting.rectHeight / 2);
-    
+
     sprites.cat.addChild(rect);
     // app.stage.addChild(rect);
 }
 
 function getPenSize() {
-    let x = document.getElementById("penSizeX");
-    let y = document.getElementById("penSizeY");
-    appSetting.rectHeight = y.value;
-    appSetting.rectWidth = x.value;
+    let penSizeX = document.getElementById("penSizeX");
+    let penSizeY = document.getElementById("penSizeY");
+    appSetting.rectHeight = penSizeX.value;
+    appSetting.rectWidth = penSizeY.value;
+
+    let x = document.getElementById('x');
+    let y = document.getElementById('y');
+    x.innerHTML = penSizeX.value;
+    y.innerHTML = penSizeY.value;
 }
 
 function saveImage() {
@@ -117,6 +123,6 @@ function mouseWheelHandler(e) {
 }
 
 function getColor(form) {
-    let doc = document.getElementById("#formColor");
+    let doc = document.getElementById("formColor");
     penColor = doc.value.replace("#", "0x");
 }
