@@ -12,7 +12,7 @@ let appSetting = {
     height: 500,
     rectWidth: 10,
     rectHeight: 10,
-    scale: 0.3,
+    scale: 1,
 };
 
 const app = new Application({
@@ -36,7 +36,9 @@ function setup() {
     app.stage.addChild(sprites.cat);
 
     app.stage.interactive = true;
+    // Событие прокрутки колеса мыши
     document.addEventListener("mousewheel", mouseWheelHandler);
+    // Событие нажатия на правую кнопку мыши по Canvas
     app.stage.on("mousedown", drawRectangle);
 
     app.ticker.add((delta) => gameLoop(delta));
@@ -45,6 +47,8 @@ function setup() {
 function gameLoop(delta) {
     sprites.cat.scale.x = appSetting.scale;
     sprites.cat.scale.y = appSetting.scale;
+
+
 }
 
 function drawRectangle(e) {
@@ -55,10 +59,14 @@ function drawRectangle(e) {
     rect.drawRect(0, 0, appSetting.rectWidth, appSetting.rectHeight);
     rect.endFill();
 
-    rect.x = posMouse.x - Math.round(appSetting.rectWidth / 2);
+    posMouse.x /= appSetting.scale;
+    posMouse.y /= appSetting.scale;
+
+    rect.x = posMouse.x - Math.round(appSetting.rectWidth  / 2);
     rect.y = posMouse.y - Math.round(appSetting.rectHeight / 2);
     
-    app.stage.addChild(rect);
+    sprites.cat.addChild(rect);
+    // app.stage.addChild(rect);
 }
 
 function getPenSize() {
@@ -75,7 +83,7 @@ function saveImage() {
 function openImage() {
     console.log("Open Image");
 }
-///
+////
 function drawLine() {
     for (let i = 0; i < appSetting.height; i += appSetting.rectWH) {
         drawLineH(i, 0);
