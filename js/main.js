@@ -4,125 +4,192 @@ let loader = PIXI.loader;
 let Sprite = PIXI.Sprite;
 let resources = PIXI.loader.resources;
 let RenderTexture = PIXI.RenderTexture;
-
-let penColor = 0xffff00;
+let Text = PIXI.Text;
+let TextStyle = PIXI.TextStyle;
+let autoDetectRenderer = PIXI.autoDetectRenderer;
 
 let appSetting = {
-    width: 800,
+    width: 500,
     height: 500,
-    rectWidth: 10,
-    rectHeight: 10,
+    rectWidth: 32,
+    rectHeight: 32,
     scale: 1,
+    rotation: 0,
 };
+const fonyStyle = new TextStyle({
+    fontFamily: "Verdana",
+    fontSize: 13,
+    fill: ["#ffffff"], // gradient , "#00ff99"
+    stroke: "#4a1850",
+    strokeThickness: 5,
+    lineJoin: "round",
+});
 
+let penColors = {
+    red: 0xfe0008, // красный
+    orange: 0xffa500, // оранжевый
+    yellow: 0xffff00, // жёлтый
+    green: 0x00ff00, // зелёный
+    cyan: 0x00ffff, // "голубой"
+    blue: 0x0000ff, // синий
+    purple: 0xa020f0, // фиолетовый
+};
+// 16646152 // красный
+// 16753920 // оранжевый
+// 16776960 // жёлтый
+// 65280    // зелёный
+// 65535    // "голубой"
+// 255      // синий
+// 10494192 // фиолетовый
+let targetColor = penColors.blue;
+console.log(penColors.cyan);
 const app = new Application({
     width: appSetting.width,
     height: appSetting.height,
     backgroundColor: 0xffffff,
 });
 
+let zoomPosition = {
+    x: 0,
+    y: 0
+}
 // Рамка для canvsa на странице
 app.renderer.view.style.border = "1px solid black";
 
 document.querySelector(".app").appendChild(app.view);
-loader.add("images/kot.jpg").load(setup);
-
-let sprites = {};
-let cat;
+loader.add("images/background.png").load(setup);
+let back;
+const rectangles = [];
+const digist = [];
 
 function setup() {
-    sprites.cat = new Sprite(resources["images/kot.jpg"].texture);
+    back = new Sprite(resources["images/background.png"].texture);
 
-    sprites.cat.width = appSetting.width;
-    sprites.cat.height = appSetting.height;
-
-    app.stage.addChild(sprites.cat);
-
-    app.stage.interactive = true;
+    back.width = appSetting.width;
+    back.height = appSetting.height;
+    app.stage.addChild(back);
+    // app.stage.interactive = true;
     // Событие прокрутки колеса мыши
     document.addEventListener("mousewheel", mouseWheelHandler);
-    // Событие нажатия на правую кнопку мыши по Canvas
-    app.stage.on("mousedown", drawRectangle);
+    drawRect();
 
     app.ticker.add((delta) => gameLoop(delta));
+
+
+
 }
 
 function gameLoop(delta) {
-    sprites.cat.scale.x = appSetting.scale;
-    sprites.cat.scale.y = appSetting.scale;
+    back.position.x = zoomPosition.x;
+    back.position.y = zoomPosition.y;
+ 
+    back.scale.x = appSetting.scale;
+    back.scale.y = appSetting.scale;
 }
 
-function drawRectangle(e) {
-    let rect = new Graphics();
-    let posMouse = e.data.global;
-
-    rect.beginFill(penColor);
+function cube(x,y){
+    const rect = new Graphics();
+    rect.beginFill(penColors.cyan);
+    rect.lineStyle(1, penColors.red, 1);
     rect.drawRect(0, 0, appSetting.rectWidth, appSetting.rectHeight);
     rect.endFill();
-
-    posMouse.x /= appSetting.scale;
-    posMouse.y /= appSetting.scale;
-
-    rect.x = posMouse.x - Math.round(appSetting.rectWidth  / 2);
-    rect.y = posMouse.y - Math.round(appSetting.rectHeight / 2);
-
-    sprites.cat.addChild(rect);
-    // app.stage.addChild(rect);
+    rect.x = y;
+    rect.y = x;
+    rect.interactive = true;
+    rect.buttonMode = true;
+    return rect;
 }
 
-function getPenSize() {
-    let penSizeX = document.getElementById("penSizeX");
-    let penSizeY = document.getElementById("penSizeY");
-    appSetting.rectHeight = penSizeX.value;
-    appSetting.rectWidth = penSizeY.value;
-
-    let x = document.getElementById('x');
-    let y = document.getElementById('y');
-    x.innerHTML = penSizeX.value;
-    y.innerHTML = penSizeY.value;
+function label(x,y){
+    const namText = new Text(
+        Math.floor(Math.random(-1, 2) * 10),
+        fonyStyle
+    );
+    namText.x = y;
+    namText.y = x;
+    // richText.interactive = true;
+    // richText.buttonMode = true;
+    // richText.width = appSetting.rectWidth;
+    // richText.height = appSetting.rectHeight;
+    return namText;
 }
 
-function saveImage() {
-    console.log("Save Image");
-}
+function drawRect() {
+    for (let x = 0; x < appSetting.height; x += appSetting.rectHeight) {
+        for (let y = 0; y < appSetting.width; y += appSetting.rectWidth) {
+            let rect = cube(x,y);
+            rect.on("pointerdown", onButtonDown);
+            let numText = label(x,y);
+            // richText.on("pointerdown", onButtonDownText);
+            
+            back.addChild(rect);
+            back.addChild(numText);
 
-function openImage() {
-    console.log("Open Image");
-}
-////
-function drawLine() {
-    for (let i = 0; i < appSetting.height; i += appSetting.rectWH) {
-        drawLineH(i, 0);
-        drawLineW(0, i);
+            rectangles.push(rect);
+            digist.push(numText);
+        }
     }
 }
 
-function drawLineH(i, j) {
-    let line = new Graphics();
-    line.lineStyle(1, 0xff0000, 1);
-    line.moveTo(0, 0);
-    line.lineTo(0, appSetting.height);
-    line.x = i;
-    line.y = j;
-    app.stage.addChild(line);
+function onButtonDown(e) {
+    if (this.isdown) {
+        return;
+    }
+    this.isdown = true;
+    let a = digist.filter((i) => (i.x == this.x) & (i.y == this.y));
+    console.log(a[0].text);
+    if(a[0].text == 6 & this.isdown){
+        this._tint = targetColor;
+        console.log(this._tint);
+        back.addChild(this);
+    }else{
+        this._tint = 0xfffff;
+        console.log(this._tint);
+        back.addChild(this);
+    }
+
 }
 
-function drawLineW(i, j) {
-    let line = new Graphics();
-    line.lineStyle(1, 0xff0000, 1);
-    line.moveTo(0, 0);
-    line.lineTo(appSetting.width, 0);
-    line.x = i;
-    line.y = j;
-    app.stage.addChild(line);
+function onButtonDownText() {
+    console.log(this.text);
 }
-////
+
+//Zooming
 function mouseWheelHandler(e) {
+    zoomPosition.x = e.layerX;
+    zoomPosition.y = e.layerY;
+
     appSetting.scale += e.deltaY / 10000;
-    appSetting.width += e.deltaY / 10;
+    appSetting.width += e.deltaY / 100;
 }
 
-function getColor(form) {
-    let doc = document.getElementById("formColor");
-    penColor = doc.value.replace("#", "0x");
+function getColor(e) {
+    let doc = document.querySelectorAll(".buttons");
+    doc.forEach(function(item){
+        item.addEventListener('click', function(e){
+            // e.preventDefault();
+            targetColor = penColors[e.target.value];
+            console.log(targetColor)
+        })
+    });
 }
+getColor();
+
+
+// function drawRectangle(e) {
+//     let rect = new Graphics();
+//     let posMouse = e.data.global;
+
+//     rect.beginFill(targetColor);
+//     rect.drawRect(0, 0, appSetting.rectWidth, appSetting.rectHeight);
+//     rect.endFill();
+
+//     posMouse.x /= appSetting.scale;
+//     posMouse.y /= appSetting.scale;
+
+//     rect.x = posMouse.x - Math.round(appSetting.rectWidth / 2);
+//     rect.y = posMouse.y - Math.round(appSetting.rectHeight / 2);
+
+//     back.addChild(rect);
+//     // app.stage.addChild(rect);
+// }

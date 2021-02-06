@@ -6,63 +6,46 @@
     <title>PIXI.JS APP</title>
     <link rel="stylesheet" href="style.css">
     <script src="js/pixi.min.js"></script>
-   
+    <script src="//d3js.org/d3.v3.min.js"></script>
     
     <script src="js/jscolor.js"></script>
 </head>
 <body>
     <div class="app"></div>
 
-    <div class="btn">
+    <div class="forms">
+        <div>
+            <button class="buttons redColor" value="red">red</button>
+        </div>
+        <div>
+            <button class="buttons orangeColor" value="orange">orange</button>
+        </div>
+        <div>
+            <button class="buttons yellowColor " value="yellow">yellow</button>
+        </div>
+        <div>
+            <button class="buttons greenColor" value="green">green</button>
+        </div>
+        <div>
+            <button class="buttons cyanColor" value="cyan">cyan</button>
+        </div> 
+        <div>
+            <button class="buttons blueColor" value="blue">blue</button>
+        </div> 
+        <div>
+            <button class="buttons purpleColor"value="purple">purple</button>
+        </div> 
+        </div>
+
+    </div>
+    <!-- <div class="btn">
         <button class="btn-js" onclick="saveImage()">Save Image</button>
         <button href='images/kot.jpg' download="">Download Image</button>
-    </div>
+    </div> -->
 
     <div class="result">
         <div class="scales"></div>
     </div>
-
-    <form onchange="getColor(this)" class="forms">
-        <div class="color">
-            Rectangle Color:
-            <input id="formColor" data-jscolor="{}" value="#ffff00" name="color1" class="color">
-        </div>
-
-        <div class="range">
-            <div class="range-label">
-                <a>Rectangle Size X</a>
-                <div class="range-input">
-                    <input type="range" min="1" max="100" step="1" value="10"  list="tickmarks"
-                    onchange="getPenSize()" id="penSizeX">
-                    <a id="x"></a> <br>
-                </div>
-            </div>
-           
-            <div class="range-label">
-                <a>Rectangle Size Y</a>
-                <div class="range-input">
-                    <input type="range" min="1" max="100" step="1" value="10" list="tickmarks"
-                    onchange="getPenSize()" id="penSizeY">
-                    <a id="y"></a> <br>
-                </div>
-            </div>
-            
-        </div>
-
-    </form>
-    <datalist id="tickmarks">
-        <option value="1">
-        <option value="10">
-        <option value="20">
-        <option value="30">
-        <option value="40">
-        <option value="50">
-        <option value="60">
-        <option value="70">
-        <option value="80">
-        <option value="90">
-        <option value="100">
-      </datalist>
 
     <script src="js/main.js"></script>
 </body>

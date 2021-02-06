@@ -2,27 +2,84 @@
     display: flex;
     margin: 0px;
     padding: 0px;
+
+}
+.html{
+    overflow: hidden;
 }
 .app {
+    display: flex;
+    justify-content: center;
     margin: 0px;
     padding: 0px;
 }
+
 .forms{
     display: flex;
-    flex-direction: column;
-    margin-top: 10px;
+    justify-content: center;
+    flex-direction: row;
+    margin: 10px 10px 10px;
     font-family: Arial, Helvetica, sans-serif;
 }
-.range{
+
+.buttons{
+    border: none;
+    width: 90px;
+    height: 25px;
+    margin-right: 10px;
+    border-radius: 3px;
+}
+.buttons:hover{
+    box-shadow:  0 0 20px rgba(0, 0, 0, 0.5); 
+}
+.redColor{
+    background-color: #fe0008;
+}
+
+.orangeColor{
+    background-color:#FFA500;
+}
+
+.yellowColor{
+    background-color:#FFFF00;
+}
+
+.greenColor{
+    background-color:#00FF00;
+}
+
+.cyanColor{
+    background-color:#00FFFF;
+}
+
+.blueColor{
+    background-color:#0000FF;
+}
+
+.purpleColor{
+    background-color:#A020F0;
+}
+/* .range{
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 500px;
 }
+
 .range-label{
     margin-top: 10px;
 }
+
 .range-input{
     display: flex;
     align-items: center;
 }
+
+.rotation-label{
+    margin-top: 10px;
+}
+
+.rotation-input{
+    display: flex;
+    align-items: center;
+} */
