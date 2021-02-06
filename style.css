@@ -1,37 +1,65 @@
 .body {
-    display: flex;
     margin: 0px;
     padding: 0px;
-
 }
 .html{
     overflow: hidden;
 }
+
 .app {
     display: flex;
     justify-content: center;
-    margin: 0px;
+    margin: 100px 0px 0px;
     padding: 0px;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    width: 100%;   
 }
 
 .forms{
     display: flex;
+    max-width: 600px;
+    flex-wrap: wrap;
     justify-content: center;
-    flex-direction: row;
     margin: 10px 10px 10px;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 .buttons{
     border: none;
     width: 90px;
     height: 25px;
+    margin: 10px;
     margin-right: 10px;
     border-radius: 3px;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    color: black;
 }
+
 .buttons:hover{
     box-shadow:  0 0 20px rgba(0, 0, 0, 0.5); 
 }
+
+.remove{
+    border: none;
+    width: 90px;
+    height: 25px;
+    margin: 10px;
+    margin-right: 10px;
+    border-radius: 3px;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    color: black;
+}
+
+.remove:hover{
+    box-shadow:  0 0 20px rgba(0, 0, 0, 0.5);
+}
+
 .redColor{
     background-color: #fe0008;
 }
@@ -59,27 +87,12 @@
 .purpleColor{
     background-color:#A020F0;
 }
-/* .range{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 500px;
+.darkOrchid{
+    background-color: #9932CC;
+}	
+.chocolate{
+    background-color: #D2691E;
 }
-
-.range-label{
-    margin-top: 10px;
+.tomato{
+    background-color: #FF6347;
 }
-
-.range-input{
-    display: flex;
-    align-items: center;
-}
-
-.rotation-label{
-    margin-top: 10px;
-}
-
-.rotation-input{
-    display: flex;
-    align-items: center;
-} */
