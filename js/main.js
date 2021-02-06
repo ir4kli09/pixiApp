@@ -14,7 +14,6 @@ let appSetting = {
     rectWidth: 32,
     rectHeight: 32,
     scale: 1,
-    rotation: 0,
 };
 const fonyStyle = new TextStyle({
     fontFamily: "Verdana",
@@ -33,6 +32,10 @@ let penColors = {
     cyan: 0x00ffff, // "голубой"
     blue: 0x0000ff, // синий
     purple: 0xa020f0, // фиолетовый
+
+    darkOrchid: 0x9932cc,
+    chocolate: 0xd2691e,
+    tomato: 0xff6347,
 };
 // 16646152 // красный
 // 16753920 // оранжевый
@@ -41,53 +44,42 @@ let penColors = {
 // 65535    // "голубой"
 // 255      // синий
 // 10494192 // фиолетовый
-let targetColor = penColors.blue;
-console.log(penColors.cyan);
+let targetColor = penColors.red;
+
 const app = new Application({
     width: appSetting.width,
     height: appSetting.height,
     backgroundColor: 0xffffff,
+    antialias: true,
 });
 
-let zoomPosition = {
-    x: 0,
-    y: 0
-}
 // Рамка для canvsa на странице
 app.renderer.view.style.border = "1px solid black";
 
 document.querySelector(".app").appendChild(app.view);
 loader.add("images/background.png").load(setup);
+let isRemoved = false;
 let back;
 const rectangles = [];
 const digist = [];
-
+getColor();
+removeColor();
 function setup() {
     back = new Sprite(resources["images/background.png"].texture);
-
     back.width = appSetting.width;
     back.height = appSetting.height;
     app.stage.addChild(back);
     // app.stage.interactive = true;
     // Событие прокрутки колеса мыши
-    document.addEventListener("mousewheel", mouseWheelHandler);
+    document.addEventListener("mousewheel", zoom);
     drawRect();
-
-    app.ticker.add((delta) => gameLoop(delta));
-
-
-
+    app.renderer.render(app.stage);
+    // app.ticker.add((delta) => gameLoop(delta));
 }
 
-function gameLoop(delta) {
-    back.position.x = zoomPosition.x;
-    back.position.y = zoomPosition.y;
- 
-    back.scale.x = appSetting.scale;
-    back.scale.y = appSetting.scale;
-}
+function gameLoop(delta) {}
 
-function cube(x,y){
+function cube(x, y) {
     const rect = new Graphics();
     rect.beginFill(penColors.cyan);
     rect.lineStyle(1, penColors.red, 1);
@@ -100,11 +92,8 @@ function cube(x,y){
     return rect;
 }
 
-function label(x,y){
-    const namText = new Text(
-        Math.floor(Math.random(-1, 2) * 10),
-        fonyStyle
-    );
+function label(x, y) {
+    const namText = new Text(Math.floor(Math.random(-1, 2) * 10), fonyStyle);
     namText.x = y;
     namText.y = x;
     // richText.interactive = true;
@@ -117,11 +106,11 @@ function label(x,y){
 function drawRect() {
     for (let x = 0; x < appSetting.height; x += appSetting.rectHeight) {
         for (let y = 0; y < appSetting.width; y += appSetting.rectWidth) {
-            let rect = cube(x,y);
+            let rect = cube(x, y);
             rect.on("pointerdown", onButtonDown);
-            let numText = label(x,y);
+            let numText = label(x, y);
             // richText.on("pointerdown", onButtonDownText);
-            
+
             back.addChild(rect);
             back.addChild(numText);
 
@@ -132,64 +121,106 @@ function drawRect() {
 }
 
 function onButtonDown(e) {
-    if (this.isdown) {
-        return;
-    }
-    this.isdown = true;
     let a = digist.filter((i) => (i.x == this.x) & (i.y == this.y));
-    console.log(a[0].text);
-    if(a[0].text == 6 & this.isdown){
-        this._tint = targetColor;
-        console.log(this._tint);
+    if (isRemoved) {
+        isRemoved = false;
+        this.isdown = false;
+        this._tint = penColors.cyan;
         back.addChild(this);
-    }else{
-        this._tint = 0xfffff;
-        console.log(this._tint);
-        back.addChild(this);
+        back.addChild(a[0]);
+        return 0;
     }
-
+    if (a[0].text == "0" && targetColor == penColors.red) {
+        this._tint = targetColor;
+        this.isdown = true;
+        back.addChild(this);
+    } else if (a[0].text == "1" && targetColor == penColors.orange) {
+        this._tint = targetColor;
+        this.isdown = true;
+        back.addChild(this);
+    } else if (a[0].text == "2" && targetColor == penColors.yellow) {
+        this._tint = targetColor;
+        this.isdown = true;
+        back.addChild(this);
+    } else if (a[0].text == "3" && targetColor == penColors.green) {
+        this._tint = targetColor;
+        this.isdown = true;
+        back.addChild(this);
+    } else if (a[0].text == "4" && targetColor == penColors.cyan) {
+        this._tint = targetColor;
+        this.isdown = true;
+        back.addChild(this);
+    } else if (a[0].text == "5" && targetColor == penColors.blue) {
+        this._tint = targetColor;
+        this.isdown = true;
+        back.addChild(this);
+    } else if (a[0].text == "6" && targetColor == penColors.purple) {
+        this._tint = targetColor;
+        this.isdown = true;
+        back.addChild(this);
+    } else if (a[0].text == "7" && targetColor == penColors.darkOrchid) {
+        this._tint = targetColor;
+        this.isdown = true;
+        back.addChild(this);
+    } else if (a[0].text == "8" && targetColor == penColors.chocolate) {
+        this._tint = targetColor;
+        this.isdown = true;
+        back.addChild(this);
+    } else if (a[0].text == "9" && targetColor == penColors.tomato) {
+        this._tint = targetColor;
+        this.isdown = true;
+        back.addChild(this);
+    } else {
+        let ev = this;
+        cross(ev);
+    }
 }
 
 function onButtonDownText() {
     console.log(this.text);
 }
 
-//Zooming
-function mouseWheelHandler(e) {
-    zoomPosition.x = e.layerX;
-    zoomPosition.y = e.layerY;
+function cross(ev) {
+    let line1 = new Graphics();
+    line1.lineStyle(5, 0xffffff, 1);
+    line1.moveTo(0, 0);
+    line1.lineTo(30, 30);
+    line1.x = ev.x;
+    line1.y = ev.y;
+    back.addChild(line1);
+    let line2 = new Graphics();
+    line2.lineStyle(5, 0xffffff, 1);
+    line2.moveTo(30, 0);
+    line2.lineTo(0, 30);
+    line2.x = ev.x;
+    line2.y = ev.y;
+    back.addChild(line2);
+}
 
+function zoom(e) {
     appSetting.scale += e.deltaY / 10000;
     appSetting.width += e.deltaY / 100;
+    back.transform.position.x = e.layerX - appSetting.width / 2;
+    back.transform.position.y = e.layerY - appSetting.height / 2;
+
+    back.scale.x = appSetting.scale;
+    back.scale.y = appSetting.scale;
 }
 
-function getColor(e) {
+function getColor() {
     let doc = document.querySelectorAll(".buttons");
-    doc.forEach(function(item){
-        item.addEventListener('click', function(e){
-            // e.preventDefault();
+    doc.forEach(function (item) {
+        item.addEventListener("click", function (e) {
             targetColor = penColors[e.target.value];
-            console.log(targetColor)
-        })
+            console.log(targetColor);
+        });
     });
 }
-getColor();
 
-
-// function drawRectangle(e) {
-//     let rect = new Graphics();
-//     let posMouse = e.data.global;
-
-//     rect.beginFill(targetColor);
-//     rect.drawRect(0, 0, appSetting.rectWidth, appSetting.rectHeight);
-//     rect.endFill();
-
-//     posMouse.x /= appSetting.scale;
-//     posMouse.y /= appSetting.scale;
-
-//     rect.x = posMouse.x - Math.round(appSetting.rectWidth / 2);
-//     rect.y = posMouse.y - Math.round(appSetting.rectHeight / 2);
-
-//     back.addChild(rect);
-//     // app.stage.addChild(rect);
-// }
+function removeColor() {
+    let doc = document.querySelector(".remove");
+    doc.addEventListener("click", function () {
+        isRemoved = true;
+        console.log(doc.value);
+    });
+}
