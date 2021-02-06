@@ -23,7 +23,6 @@ const app = new Application({
     antialias: true,
 });
 
-// Рамка для canvsa на странице
 app.renderer.view.style.border = "1px solid black";
 document.querySelector(".app").appendChild(app.view);
 loader.add("images/background.png").load(setup);
@@ -41,7 +40,6 @@ function setup() {
     back.width = appSetting.width;
     back.height = appSetting.height;
     app.stage.addChild(back);
-    // app.stage.interactive = true;
     document.addEventListener("mousewheel", zoom);
     drawRect();
     console.log(rectangles.filter(i=>i.geometry.id == 26));
@@ -161,8 +159,8 @@ function cross(ev) {
 function zoom(e) {
     appSetting.scale += e.deltaY / 10000;
     appSetting.width += e.deltaY / 10;
-    back.transform.position.x = e.layerX - appSetting.width / 2;
-    back.transform.position.y = e.layerY - appSetting.height / 2;
+    // back.transform.position.x = e.layerX - appSetting.width / 2;
+    // back.transform.position.y = e.layerY - appSetting.height / 2;
 
     back.scale.x = appSetting.scale;
     back.scale.y = appSetting.scale;
