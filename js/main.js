@@ -1,12 +1,10 @@
-let Graphics = PIXI.Graphics;
+import {fontStyle, penColors} from '/js/settings.js';
+let Graphics    = PIXI.Graphics;
 let Application = PIXI.Application;
-let loader = PIXI.loader;
-let Sprite = PIXI.Sprite;
-let resources = PIXI.loader.resources;
-let RenderTexture = PIXI.RenderTexture;
-let Text = PIXI.Text;
-let TextStyle = PIXI.TextStyle;
-let autoDetectRenderer = PIXI.autoDetectRenderer;
+let loader      = PIXI.loader;
+let Sprite      = PIXI.Sprite;
+let resources   = PIXI.loader.resources;
+let Text        = PIXI.Text;
 
 let appSetting = {
     width: 500,
@@ -15,35 +13,7 @@ let appSetting = {
     rectHeight: 32,
     scale: 1,
 };
-const fonyStyle = new TextStyle({
-    fontFamily: "Verdana",
-    fontSize: 13,
-    fill: ["#ffffff"], // gradient , "#00ff99"
-    stroke: "#4a1850",
-    strokeThickness: 5,
-    lineJoin: "round",
-});
 
-let penColors = {
-    red: 0xfe0008, // красный
-    orange: 0xffa500, // оранжевый
-    yellow: 0xffff00, // жёлтый
-    green: 0x00ff00, // зелёный
-    cyan: 0x00ffff, // "голубой"
-    blue: 0x0000ff, // синий
-    purple: 0xa020f0, // фиолетовый
-
-    darkOrchid: 0x9932cc,
-    chocolate: 0xd2691e,
-    tomato: 0xff6347,
-};
-// 16646152 // красный
-// 16753920 // оранжевый
-// 16776960 // жёлтый
-// 65280    // зелёный
-// 65535    // "голубой"
-// 255      // синий
-// 10494192 // фиолетовый
 let targetColor = penColors.red;
 
 const app = new Application({
@@ -55,29 +25,28 @@ const app = new Application({
 
 // Рамка для canvsa на странице
 app.renderer.view.style.border = "1px solid black";
-
 document.querySelector(".app").appendChild(app.view);
 loader.add("images/background.png").load(setup);
+
 let isRemoved = false;
 let back;
 const rectangles = [];
 const digist = [];
+
 getColor();
 removeColor();
+
 function setup() {
     back = new Sprite(resources["images/background.png"].texture);
     back.width = appSetting.width;
     back.height = appSetting.height;
     app.stage.addChild(back);
     // app.stage.interactive = true;
-    // Событие прокрутки колеса мыши
     document.addEventListener("mousewheel", zoom);
     drawRect();
+    console.log(rectangles.filter(i=>i.geometry.id == 26));
     app.renderer.render(app.stage);
-    // app.ticker.add((delta) => gameLoop(delta));
 }
-
-function gameLoop(delta) {}
 
 function cube(x, y) {
     const rect = new Graphics();
@@ -93,13 +62,9 @@ function cube(x, y) {
 }
 
 function label(x, y) {
-    const namText = new Text(Math.floor(Math.random(-1, 2) * 10), fonyStyle);
+    const namText = new Text(Math.floor(Math.random(-1, 2) * 10), fontStyle);
     namText.x = y;
     namText.y = x;
-    // richText.interactive = true;
-    // richText.buttonMode = true;
-    // richText.width = appSetting.rectWidth;
-    // richText.height = appSetting.rectHeight;
     return namText;
 }
 
@@ -109,7 +74,6 @@ function drawRect() {
             let rect = cube(x, y);
             rect.on("pointerdown", onButtonDown);
             let numText = label(x, y);
-            // richText.on("pointerdown", onButtonDownText);
 
             back.addChild(rect);
             back.addChild(numText);
@@ -130,6 +94,7 @@ function onButtonDown(e) {
         back.addChild(a[0]);
         return 0;
     }
+    //костыль
     if (a[0].text == "0" && targetColor == penColors.red) {
         this._tint = targetColor;
         this.isdown = true;
@@ -176,10 +141,6 @@ function onButtonDown(e) {
     }
 }
 
-function onButtonDownText() {
-    console.log(this.text);
-}
-
 function cross(ev) {
     let line1 = new Graphics();
     line1.lineStyle(5, 0xffffff, 1);
@@ -199,7 +160,7 @@ function cross(ev) {
 
 function zoom(e) {
     appSetting.scale += e.deltaY / 10000;
-    appSetting.width += e.deltaY / 100;
+    appSetting.width += e.deltaY / 10;
     back.transform.position.x = e.layerX - appSetting.width / 2;
     back.transform.position.y = e.layerY - appSetting.height / 2;
 
