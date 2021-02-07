@@ -183,12 +183,12 @@ function savePos(){
 let arrayRects = [];
 function seveCubePosition(){
     //key - индекс в массиве
-    for(let key in rectangles){
+    for(let key in back.children){
         let saveRect = new Rects();
         saveRect.id = key;
-        saveRect.color = rectangles[key]["tint"];
-        saveRect.coord.x = rectangles[key]["x"];
-        saveRect.coord.y = rectangles[key]["y"];
+        saveRect.color   = back.children[key]["tint"];
+        saveRect.coord.x = back.children[key]["x"];
+        saveRect.coord.y = back.children[key]["y"];
         arrayRects.push(saveRect);
     }
     let json = JSON.stringify(arrayRects);
