@@ -1,4 +1,7 @@
 let TextStyle = PIXI.TextStyle;
+
+
+
 const fontStyle = new TextStyle({
     fontFamily: "Verdana",
     fontSize: 13,
@@ -8,6 +11,7 @@ const fontStyle = new TextStyle({
     lineJoin: "round",
 });
 
+
 let penColors = {
     red: 0xfe0008, // красный
     orange: 0xffa500, // оранжевый
@@ -16,7 +20,7 @@ let penColors = {
     cyan: 0x00ffff, // "голубой"
     blue: 0x0000ff, // синий
     purple: 0xa020f0, // фиолетовый
-    darkOrchid: 0x9932cc,
+    darkOrchid: 0xe512ec,
     chocolate: 0xd2691e,
     tomato: 0xff6347,
 };
@@ -27,4 +31,15 @@ let penColors = {
 // 65535    // "голубой"
 // 255      // синий
 // 10494192 // фиолетовый
-export {fontStyle, penColors};
+let appSetting = {
+    width: 500,
+    height: 500,
+    rectWidth: 32,
+    rectHeight: 32,
+    scale: 1,
+    targetColor: 0xfe0008,
+    crossColor: 0xff0000,
+    backColor: 0xffffff,
+};
+
+export {fontStyle, penColors, appSetting};
