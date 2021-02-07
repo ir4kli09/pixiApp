@@ -24,13 +24,7 @@ let penColors = {
     chocolate: 0xd2691e,
     tomato: 0xff6347,
 };
-// 16646152 // красный
-// 16753920 // оранжевый
-// 16776960 // жёлтый
-// 65280    // зелёный
-// 65535    // "голубой"
-// 255      // синий
-// 10494192 // фиолетовый
+
 let appSetting = {
     width: 500,
     height: 500,
@@ -41,5 +35,21 @@ let appSetting = {
     crossColor: 0xff0000,
     backColor: 0xffffff,
 };
+export class Rects{
+    id;
+    coord={
+        x:0,
+        y:0
+    };
+    color;
+}
+export class Numbers{
+    id;
+    coord={
+        x:0,
+        y:0
+    };
+    text;
+}
 
 export {fontStyle, penColors, appSetting};

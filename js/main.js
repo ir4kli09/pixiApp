@@ -1,4 +1,4 @@
-import { fontStyle, penColors, appSetting } from "/js/settings.js";
+import { fontStyle, penColors, appSetting, Rects, Numbers } from "/js/settings.js";
 let Graphics = PIXI.Graphics;
 let Application = PIXI.Application;
 let loader = PIXI.loader;
@@ -20,10 +20,11 @@ loader.add("images/background.png").load(setup);
 let isRemoved = false;
 let back;
 let rectangles = [];
-let digist = [];
+let digits = [];
 
 getColor();
 removeColor();
+savePos();
 
 function setup() {
     back = new Sprite(resources["images/background.png"].texture);
@@ -32,7 +33,6 @@ function setup() {
     app.stage.addChild(back);
     document.addEventListener("mousewheel", zoom);
     drawRect();
-
     app.renderer.render(app.stage);
 }
 //квадраты
@@ -67,18 +67,18 @@ function drawRect() {
             back.addChild(numText);
 
             rectangles.push(rect);
-            digist.push(numText);
+            digits.push(numText);
         }
     }
 }
 //событие нажатия на квадрат
 function onButtonClick(e) {
-    let num = digist.filter((i) => (i.x == this.x) & (i.y == this.y));
+    let num = digits.filter((i) => (i.x == this.x) & (i.y == this.y));
     if (isRemoved) {
         removed(this, num);
         return 0;
     }
-    //костыль num[0].text == "0" & !this.isdown & appSetting.targetColor == penColors.red
+    //костыль 
     let txtBtn = num[0].text;
     if (isTrue(txtBtn, "0", this.isdown, penColors.red)) {
         print(this);
@@ -112,13 +112,14 @@ function isTrue(txtBtn, text, down, color) {
         return false;
     }
 }
-//удаление цвета и креста
+//удаление цвета и креста TODO: удалять line1,line2, а не закрашивать
 function removed(e, num) {
     isRemoved = false;
     e.isdown = false;
     e._tint = appSetting.backColor;
     back.addChild(e);
     back.addChild(num[0]);
+    // back.removeChild(e);   
 }
 //если цвет и число совпадает закращиваем
 function print(e) {
@@ -128,20 +129,20 @@ function print(e) {
 }
 //если цвет и число не совпадает рисуем крест
 function cross(ev) {
+    let lineBold = 3;
     let line1 = new Graphics();
-    line1.lineStyle(5, appSetting.crossColor, 1);
-    line1.moveTo(0, 0);
-    line1.lineTo(30, 30);
+    line1.lineStyle(lineBold, appSetting.crossColor, 1);
+    line1.moveTo(7, 7);
+    line1.lineTo(25, 25);
     line1.x = ev.x;
     line1.y = ev.y;
-    back.addChild(line1);
     let line2 = new Graphics();
-    line2.lineStyle(5, appSetting.crossColor, 1);
-    line2.moveTo(30, 0);
-    line2.lineTo(0, 30);
+    line2.lineStyle(lineBold, appSetting.crossColor, 1);
+    line2.moveTo(7, 25);
+    line2.lineTo(25, 7);
     line2.x = ev.x;
     line2.y = ev.y;
-    back.addChild(line2);
+    back.addChild(line1,line2);
     ev.isdown = true;
 }
 //увеличение по прокретке колёсика мыши
@@ -168,6 +169,41 @@ function removeColor() {
     let doc = document.querySelector(".remove");
     doc.addEventListener("click", function () {
         isRemoved = true;
-        console.log(doc.value);
     });
+}
+
+function savePos(){
+    let doc = document.querySelector('.savePos');
+    doc.addEventListener('click', function(){
+        seveCubePosition();
+        seveNumbersPosition();
+    });
+}
+
+let arrayRects = [];
+function seveCubePosition(){
+    //key - индекс в массиве
+    for(let key in rectangles){
+        let saveRect = new Rects();
+        saveRect.id = key;
+        saveRect.color = rectangles[key]["tint"];
+        saveRect.coord.x = rectangles[key]["x"];
+        saveRect.coord.y = rectangles[key]["y"];
+        arrayRects.push(saveRect);
+    }
+    let json = JSON.stringify(arrayRects);
+}
+
+let arrayNumbs = [];
+function seveNumbersPosition(){
+    //key - индекс в массиве
+    for(let key in digits){
+        let saveNamb = new Numbers();
+        saveNamb.id = key;
+        saveNamb.coord.x = digits[key]["x"];
+        saveNamb.coord.y = digits[key]["y"];
+        saveNamb.text = digits[key]["text"]
+        arrayNumbs.push(saveNamb);
+    }
+    let json = JSON.stringify(arrayNumbs);
 }
