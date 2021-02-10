@@ -1,4 +1,10 @@
-import { fontStyle, penColors, appSetting, Rects, Numbers } from "/js/settings.js";
+import {
+    fontStyle,
+    penColors,
+    appSetting,
+    Rects,
+    Numbers,
+} from "/js/settings.js";
 let Graphics = PIXI.Graphics;
 let Application = PIXI.Application;
 let loader = PIXI.loader;
@@ -30,7 +36,7 @@ function setup() {
     back = new Sprite(resources["images/background.png"].texture);
     back.width = appSetting.width;
     back.height = appSetting.height;
-    
+
     document.addEventListener("mousewheel", zoom);
     drawRect();
     app.stage.addChild(back);
@@ -79,7 +85,7 @@ function onButtonClick(e) {
         removed(this, num);
         return 0;
     }
-    //костыль 
+    //костыль
     let txtBtn = num[0].text;
     if (isTrue(txtBtn, "0", this.isdown, penColors.red)) {
         print(this);
@@ -101,7 +107,7 @@ function onButtonClick(e) {
         print(this);
     } else if (isTrue(txtBtn, "9", this.isdown, penColors.tomato)) {
         print(this);
-    } else if(!this.isdown){
+    } else if (!this.isdown) {
         cross(this);
     }
 }
@@ -120,7 +126,7 @@ function removed(e, num) {
     e._tint = appSetting.backColor;
     back.addChild(e);
     back.addChild(num[0]);
-    // back.removeChild(e);   
+    // back.removeChild(e);
 }
 //если цвет и число совпадает закращиваем
 function print(e) {
@@ -130,21 +136,22 @@ function print(e) {
 }
 //если цвет и число не совпадает рисуем крест
 function cross(ev) {
-    let lineBold = 3;
-    let line1 = new Graphics();
-    line1.lineStyle(lineBold, appSetting.crossColor, 1);
-    line1.moveTo(7, 7);
-    line1.lineTo(25, 25);
-    line1.x = ev.x;
-    line1.y = ev.y;
-    let line2 = new Graphics();
-    line2.lineStyle(lineBold, appSetting.crossColor, 1);
-    line2.moveTo(7, 25);
-    line2.lineTo(25, 7);
-    line2.x = ev.x;
-    line2.y = ev.y;
-    back.addChild(line1,line2);
     ev.isdown = true;
+    let lineBold = 3;
+    let l1 = line(ev.x, ev.y, 7, 7, 25, 25);
+    let l2 = line(ev.x, ev.y, 7, 25, 25, 7);
+    back.addChild(l1, l2);
+}
+
+function line(x, y, mt1, mt2, lt1, lt2){
+    let line1 = new Graphics();
+    let lineBold = 3;
+    line1.lineStyle(lineBold, appSetting.crossColor, 1);
+    line1.moveTo(mt1, mt2);
+    line1.lineTo(lt1, lt2);
+    line1.x = x;
+    line1.y = y;
+    return line1;
 }
 //увеличение по прокретке колёсика мыши
 function zoom(e) {
@@ -173,21 +180,21 @@ function removeColor() {
     });
 }
 
-function savePos(){
-    let doc = document.querySelector('.savePos');
-    doc.addEventListener('click', function(){
+function savePos() {
+    let doc = document.querySelector(".savePos");
+    doc.addEventListener("click", function () {
         seveCubePosition();
         seveNumbersPosition();
     });
 }
 
 let arrayRects = [];
-function seveCubePosition(){
+function seveCubePosition() {
     //key - индекс в массиве
-    for(let key in back.children){
+    for (let key in back.children) {
         let saveRect = new Rects();
         saveRect.id = key;
-        saveRect.color   = back.children[key]["tint"];
+        saveRect.color = back.children[key]["tint"];
         saveRect.coord.x = back.children[key]["x"];
         saveRect.coord.y = back.children[key]["y"];
         arrayRects.push(saveRect);
@@ -196,14 +203,14 @@ function seveCubePosition(){
 }
 
 let arrayNumbs = [];
-function seveNumbersPosition(){
+function seveNumbersPosition() {
     //key - индекс в массиве
-    for(let key in digits){
+    for (let key in digits) {
         let saveNamb = new Numbers();
         saveNamb.id = key;
         saveNamb.coord.x = digits[key]["x"];
         saveNamb.coord.y = digits[key]["y"];
-        saveNamb.text = digits[key]["text"]
+        saveNamb.text = digits[key]["text"];
         arrayNumbs.push(saveNamb);
     }
     let json = JSON.stringify(arrayNumbs);
