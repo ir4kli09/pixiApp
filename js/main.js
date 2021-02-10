@@ -30,10 +30,11 @@ function setup() {
     back = new Sprite(resources["images/background.png"].texture);
     back.width = appSetting.width;
     back.height = appSetting.height;
-    app.stage.addChild(back);
+    
     document.addEventListener("mousewheel", zoom);
     drawRect();
-    app.renderer.render(app.stage);
+    app.stage.addChild(back);
+    // app.renderer.render(app.stage);
 }
 //квадраты
 function cube(x, y) {
@@ -100,7 +101,7 @@ function onButtonClick(e) {
         print(this);
     } else if (isTrue(txtBtn, "9", this.isdown, penColors.tomato)) {
         print(this);
-    } else {
+    } else if(!this.isdown){
         cross(this);
     }
 }

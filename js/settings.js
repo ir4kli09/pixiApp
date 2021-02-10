@@ -1,7 +1,5 @@
 let TextStyle = PIXI.TextStyle;
 
-
-
 const fontStyle = new TextStyle({
     fontFamily: "Verdana",
     fontSize: 13,
